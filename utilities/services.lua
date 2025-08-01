@@ -5,7 +5,7 @@ end})
 local service_list = {'Players', 'RunService', 'ReplicatedStorage', 'CoreGui', 'TextService', 'TextChatService', 'HttpService', 'GuiService', 'UserInputService', 'MarketplaceService', 'TweenService', 'VirtualUser', 'Stats', 'StarterGui', 'CollectionService'}
 
 local services = {}; do
-    for index, service in pairs service_list do
+    for index, service in pairs(service_list) do
         services[service] = get_service[service]
     end
 
