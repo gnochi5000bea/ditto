@@ -13,3 +13,5 @@ local functions = {}; do
         return
     end
 end
+
+return functions
