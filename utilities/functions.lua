@@ -1,4 +1,4 @@
-local services = loadstring(game:HttpGet('https://raw.githubusercontent.com/gnochi5000bea/cuck84/refs/heads/main/utilities/services.lua', true))()
+local services = loadstring(game:HttpGet('https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/utilities/services.lua', true))()
 
 local lplr = services['Players'].LocalPlayer
 
