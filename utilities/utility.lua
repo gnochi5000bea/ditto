@@ -1,4 +1,4 @@
-local services = loadstring(game:HttpGet('https://raw.githubusercontent.com/gnochi5000bea/cuck84/refs/heads/main/utilities/services.lua', true))()
+local services = loadstring(game:HttpGet('https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/utilities/services.lua', true))()
 
 local utility = {connections = {}, stored_connections = {}, debounces = {}}; do
     local connections = utility.connections
