@@ -150,8 +150,10 @@ for _, path in next, library.folders do
     makefolder(library.directory .. path)
 end
 
-if not isfile(library.directory .. "/assets/ditto.png") then
-    writefile(library.directory .. "/assets/ditto.png", game:HttpGet("https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/assets/ditto.png"))
+for _, asset in next, {'ditto', 'rayquaza', 'eevee', 'charizard'} do
+    if not isfile(library.directory .. "/assets/" .. asset .. ".png") then
+        writefile(library.directory .. "/assets/" .. asset .. ".png", game:HttpGet("https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/assets/" .. asset .. ".png"))
+    end
 end
 
 if not isfile(library.directory .. "/assets/rayquaza.png") then
@@ -2699,6 +2701,14 @@ function library:apply_theme(theme)
         ['Rayquaza'] = {
             Color = rgb(90, 188, 138),
             Icon = getcustomasset(library.directory .. "/assets/rayquaza.png")
+        },
+        ['Eevee'] = {
+            Color = rgb(234, 204, 154),
+            Icon = getcustomasset(library.directory .. "/assets/eevee.png")
+        },
+        ['Charizard'] = {
+            Color = rgb(239, 130, 41),
+            Icon = getcustomasset(library.directory .. "/assets/charizard.png")
         }
     }
 
