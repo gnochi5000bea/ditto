@@ -498,6 +498,7 @@ function library:Window(properties)
             FontFace = Font.fromId(12187365364, Enum.FontWeight.Bold);
             TextColor3 = library.theme.font;
             TextStrokeColor3 = rgb(255, 255, 255);
+            RichText = true;
             Text = cfg.name;
             TextXAlignment = Enum.TextXAlignment.Left;
             Parent = items[ "top_frame" ];
@@ -2661,11 +2662,9 @@ function library:List(properties)
     return setmetatable(cfg, library)
 end
 
-return library
+return getgenv().library
 
 --[[
-local window = library:Window({name = "ditto hub", size = dim2(0, 677, 0, 477)})
-
 local main_tab = window:Tab({name = 'Main'})
 local aiming_subtab = main_tab:Subtab({name = 'Aiming'})
 local aimassist_section = aiming_subtab:Section({name = "Aim-assist"})
