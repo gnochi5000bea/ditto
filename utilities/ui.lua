@@ -73,6 +73,12 @@ getgenv().library = {
         "/configs",
         "/assets"
     },
+    assets = {
+        'ditto',
+        'rayquaza',
+        'eevee',
+        'charizard'
+    },
     flags = {},
     config_flags = {},
     connections = {},   
@@ -150,7 +156,7 @@ for _, path in next, library.folders do
     makefolder(library.directory .. path)
 end
 
-for _, asset in next, {'ditto', 'rayquaza', 'eevee', 'charizard'} do
+for _, asset in next, library.assets do
     if not isfile(library.directory .. "/assets/" .. asset .. ".png") then
         writefile(library.directory .. "/assets/" .. asset .. ".png", game:HttpGet("https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/assets/" .. asset .. ".png"))
     end
