@@ -2718,7 +2718,7 @@ function library:apply_theme(theme)
 
     for _, instance in library.themeable do
         if instance:IsA('TextLabel') then
-            instance.Text = value.instance:gsub('rgb%(%d+,%s*%d+,%s*%d+%)', string.format('rgb(%d, %d, %d)', r, g, b))
+            instance.Text = instance.Text:gsub('rgb%(%d+,%s*%d+,%s*%d+%)', string.format('rgb(%d, %d, %d)', r, g, b))
         elseif instance:IsA('Frame') then
             instance.BackgroundColor3 = library.theme.accent
         elseif instance:IsA('UIGradient') then
