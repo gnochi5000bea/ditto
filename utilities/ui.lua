@@ -84,6 +84,7 @@ getgenv().library = {
         outline = rgb(47, 47, 47),
         font = rgb(151, 151, 151)
     },
+    themeable = {},
     current_open;
     esp_holder;
 }
@@ -509,7 +510,7 @@ function library:Window(properties)
             BorderColor3 = rgb(0, 0, 0);
             TextSize = 14;
             BackgroundColor3 = rgb(255, 255, 255)
-        });
+        }); table.insert(library.themeable, items[ "ui_title" ])
 
         items[ "inline" ] = library:create( "Frame" , {
             Parent = items[ "window" ];
@@ -596,7 +597,7 @@ function library:Window(properties)
             Size = dim2(0, 75, 0, 75);
             BorderSizePixel = 0;
             BackgroundColor3 = rgb(255, 255, 255)
-        });
+        }); table.insert(library.themeable, items[ "logo" ])
 
         items[ "logo_title" ] = library:create( "TextLabel" , {
             FontFace = Font.fromId(12187365364, Enum.FontWeight.Bold);
@@ -614,7 +615,7 @@ function library:Window(properties)
             BorderColor3 = rgb(0, 0, 0);
             TextSize = 14;
             BackgroundColor3 = rgb(255, 255, 255)
-        });
+        }); table.insert(library.themeable, items[ "logo_title" ])
 
         items[ "left_logo_line" ] = library:create( "Frame" , {
             Name = "\0";
@@ -626,14 +627,14 @@ function library:Window(properties)
             BackgroundColor3 = rgb(255, 255, 255)
         });
 
-        library:create( "UIGradient" , {
+        items[ "left_logo_line_gradient" ] = library:create( "UIGradient" , {
             Parent = items[ "left_logo_line" ];
             Rotation = -90;
             Color = rgbseq{
                 rgbkey(0, library.theme.accent),
                 rgbkey(1, library.theme.background)
             };
-        })
+        }); table.insert(library.themeable, items[ "left_logo_line_gradient" ])
 
         items[ "right_logo_line" ] = library:create( "Frame" , {
             Name = "\0";
@@ -645,14 +646,14 @@ function library:Window(properties)
             BackgroundColor3 = rgb(255, 255, 255)
         });
 
-        library:create( "UIGradient" , {
+        items[ "right_logo_line_gradient" ] = library:create( "UIGradient" , {
             Parent = items[ "right_logo_line" ];
             Rotation = -90;
             Color = rgbseq{
                 rgbkey(0, library.theme.accent),
                 rgbkey(1, rgb(library.theme.background))
             };
-        })
+        }); table.insert(library.themeable, items[ "right_logo_line_gradient" ])
 
         items[ "line" ] = library:create( "Frame" , {
             Name = "\0";
@@ -662,7 +663,7 @@ function library:Window(properties)
             Size = dim2(1, -4, 0, 1);
             BorderSizePixel = 0;
             BackgroundColor3 = library.theme.accent
-        });
+        }); table.insert(library.themeable, items[ "line" ])
     end 
 
     do
@@ -714,7 +715,7 @@ function library:Tab(properties)
             BorderColor3 = rgb(0, 0, 0);
             BorderSizePixel = 0;
             BackgroundColor3 = library.theme.accent
-        });
+        }); table.insert(library.themeable, items[ "tab_line" ])
 
         items[ "tab_title" ] = library:create( "TextLabel" , {
             FontFace = Font.fromId(12187365364, Enum.FontWeight.SemiBold);
@@ -1188,7 +1189,7 @@ function library:Slider(options)
             Size = dim2(0, 0, 1, 0);
             BorderSizePixel = 0;
             BackgroundColor3 = library.theme.accent
-        });
+        }); table.insert(library.themeable, items[ "gradient_holder" ])
 
         library:create( "UICorner" , {
             Parent = items[ "gradient_holder" ];
@@ -2660,6 +2661,39 @@ function library:List(properties)
     cfg.refresh_options(cfg.options)
 
     return setmetatable(cfg, library)
+end
+
+function library:init_config(section)
+    local textbox;
+    local label;
+    config_holder = section:Dropdown({Name = "Configs", Items = {"Report", "This", "Error", "To", "Transform"}, callback = function(option) if textbox then textbox.set(option) end end, flag = "config_name_list"}); library:update_config_list()
+    textbox = section:Textbox({name = "Config name:", flag = "config_name_text"})
+    section:Button({name = "Save", callback = function()
+        writefile(library.directory .. "/configs/" .. flags["config_name_text"] .. ".cfg", library:get_config())
+        library:update_config_list()
+    end})
+    section:Button({name = "Load", callback = function() 
+        library:load_config(readfile(library.directory .. "/configs/" .. flags["config_name_text"] .. ".cfg"))
+        library:update_config_list()
+    end})
+    section:Button({name = "Delete", callback = function()
+        delfile(library.directory .. "/configs/" .. flags["config_name_text"] .. ".cfg")
+        library:update_config_list()
+    end})
+    section:Toggle({Name = 'Auto load', Flag = 'configs_auto_load', Default = readfile(library.directory .. "/auto_load_status.txt") == 'true' and true or false, callback = function(value)
+        writefile(library.directory .. "/auto_load_status.txt", tostring(value))
+    end})
+    section:Button({name = "Set auto load", callback = function()
+        writefile(library.directory .. "/auto_load.txt", flags["config_name_text"])
+        label.set("Auto load config: " .. readfile(library.directory .. "/auto_load.txt"))
+    end})
+    label = section:Label({Name = "Auto load config: " .. readfile(library.directory .. "/auto_load.txt")})
+end
+
+function library:apply_theme(color, icon)
+    for index, value in library.themeable do
+        print(index, value)
+    end
 end
 
 return getgenv().library
