@@ -150,8 +150,12 @@ for _, path in next, library.folders do
     makefolder(library.directory .. path)
 end
 
-if not isfile(library.directory .. "/assets/icon.png") then
-    writefile(library.directory .. "/assets/icon.png", game:HttpGet("https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/assets/icon.png"))
+if not isfile(library.directory .. "/assets/ditto.png") then
+    writefile(library.directory .. "/assets/ditto.png", game:HttpGet("https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/assets/ditto.png"))
+end
+
+if not isfile(library.directory .. "/assets/rayquaza.png") then
+    writefile(library.directory .. "/assets/rayquaza.png", game:HttpGet("https://raw.githubusercontent.com/gnochi5000bea/ditto/refs/heads/main/assets/rayquaza.png"))
 end
 
 if not isfile(library.directory .. "/auto_load.txt") then
@@ -165,10 +169,6 @@ end
 local flags = library.flags 
 local config_flags = library.config_flags
 local notifications = library.notifications 
-
-if not isfile(library.directory .. "/fonts/main.ttf") then 
-    writefile(library.directory .. "/fonts/main.ttf", game:HttpGet("https://github.com/gnochi5000bea/assets/raw/refs/heads/main/ProggyClean.ttf"))
-end 
 
 library.font = Font.fromId(12187365364, Enum.FontWeight.Medium)
 
@@ -430,7 +430,7 @@ function library:Window(properties)
     local cfg = {
         name = properties.name or properties.Name or "cuck83";
         size = properties.size or properties.Size or dim2(0, 577, 0, 377);
-        logo = properties.logo or properties.Logo or getcustomasset(library.directory .. "/assets/icon.png");
+        logo = properties.logo or properties.Logo or getcustomasset(library.directory .. "/assets/ditto.png");
 
         selected_tab;
         items = {};
@@ -2690,9 +2690,45 @@ function library:init_config(section)
     label = section:Label({Name = "Auto load config: " .. readfile(library.directory .. "/auto_load.txt")})
 end
 
-function library:apply_theme(color, icon)
-    for index, value in library.themeable do
-        print(index, value)
+function library:apply_theme(theme)
+    local themes = {
+        ['Ditto'] = {
+            Color = rgb(252, 157, 242),
+            Icon = getcustomasset(library.directory .. "/assets/ditto.png")
+        },
+        ['Rayquaza'] = {
+            Color = rgb(90, 188, 138),
+            Icon = getcustomasset(library.directory .. "/assets/rayquaza.png")
+        }
+    }
+
+    local old_color = library.theme.accent; library.theme.accent = themes[theme].Color
+
+    for index, value in library[ "items" ]:GetDescendants() do
+        if value:IsA('TextLabel') and value.TextColor3 == old_color then
+            value.TextColor3 = library.theme.accent
+        elseif value:IsA('Frame') and value.BackgroundColor3 == old_color then
+            value.BackgroundColor3 = library.theme.accent
+        end
+    end
+
+    local r = math.floor(library.theme.accent.R * 255)
+    local g = math.floor(library.theme.accent.G * 255)
+    local b = math.floor(library.theme.accent.B * 255)
+
+    for _, instance in library.themeable do
+        if instance:IsA('TextLabel') then
+            instance.Text = value.instance:gsub('rgb%(%d+,%s*%d+,%s*%d+%)', string.format('rgb(%d, %d, %d)', r, g, b))
+        elseif instance:IsA('Frame') then
+            instance.BackgroundColor3 = library.theme.accent
+        elseif instance:IsA('UIGradient') then
+            instance.Color = rgbseq{
+                rgbkey(0, library.theme.accent),
+                rgbkey(1, library.theme.background)
+            }
+        elseif instance:IsA('ImageLabel') then
+            instance.Image = themes[theme].Icon
+        end
     end
 end
 
