@@ -2499,20 +2499,11 @@ function library:Button(options)
             Name = "\0";
             AutoButtonColor = false;
             BackgroundTransparency = 1;
-            Size = dim2(1, 0, 0, 16);
+            Size = dim2(1, 0, 0, 20);
             BorderColor3 = rgb(0, 0, 0);
             BorderSizePixel = 0;
             AutomaticSize = Enum.AutomaticSize.Y;
             BackgroundColor3 = rgb(255, 255, 255)
-        });
-        
-        items[ "button_outline" ] = library:create( "Frame" , {
-            Name = "\0";
-            Parent = items[ "button" ];
-            BorderColor3 = rgb(0, 0, 0);
-            Size = dim2(1, 0, 0, 15);
-            BorderSizePixel = 0;
-            BackgroundColor3 = rgb(0, 0, 0)
         });
         
         items[ "button_shading" ] = library:create( "Frame" , {
@@ -2520,16 +2511,10 @@ function library:Button(options)
             Name = "\0";
             Position = dim2(0, 1, 0, 1);
             BorderColor3 = rgb(0, 0, 0);
-            Size = dim2(1, -2, 1, -2);
+            Size = dim2(1, 0, 1, 0);
             BorderSizePixel = 0;
-            BackgroundColor3 = library.theme.main
-        });
-        
-        library:create( "UIGradient" , {
-            Parent = items[ "button_shading" ];
-            Rotation = -90;
-            Color = rgbseq{rgbkey(0, library.theme.outline); rgbkey(1, Color3.fromRGB(255, 255, 255))};
-        })
+            BackgroundColor3 = library.theme.accent
+        }); table.insert(library.themeable, items[ "button_shading" ])
         
         items[ "button_text" ] = library:create( "TextLabel" , {
             FontFace = library.font;
@@ -2545,16 +2530,6 @@ function library:Button(options)
             TextSize = 14;
             BackgroundColor3 = rgb(255, 255, 255)
         });
-        
-        library:create( "UIStroke" , {
-            Parent = items[ "button_text" ]
-        });
-        
-        library:create( "UIListLayout" , {
-            Parent = items[ "button" ];
-            Padding = dim(0, 5);
-            SortOrder = Enum.SortOrder.LayoutOrder
-        });                             
     end 
 
     items[ "button" ].MouseButton1Click:Connect(function()
@@ -2749,29 +2724,10 @@ function library:apply_theme(theme)
 end
 
 return getgenv().library
-
 --[[
 local main_tab = window:Tab({name = 'Main'})
 local aiming_subtab = main_tab:Subtab({name = 'Aiming'})
 local aimassist_section = aiming_subtab:Section({name = "Aim-assist"})
-aimassist_section:Toggle({Name = 'Enabled', Flag = 'aimassist'})--:Keybind({Flag = 'aimassist_keybind', Mode = 'Hold'})
-
-aimassist_section:Toggle({Name = 'Show fov', Flag = 'aimassist_show_fov'})--:Colorpicker({Name = 'Fov color', Flag = 'aimassist_fov_color'})
-aimassist_section:Slider({Name = 'Fov radius', Flag = 'aimassist_fov_radius', Max = 360, Default = 180, Suffix = '°'})
-
--- aimassist_section:Dropdown({Name = 'Aiming method', Flag = 'aimassist_method', Items = {'Camera', 'Mouse'}, Default = 'Camera'})
-aimassist_section:Toggle({Name = 'Sticky aim', Flag = 'aimassist_sticky_aim'})
-aimassist_section:Toggle({Name = 'Visible check', Flag = 'aimassist_visible_check'})
-
-aimassist_section:Slider({Name = 'X smoothing', Flag = 'aimassist_horizontal_smoothing', Max = 100, Default = 0, Suffix = '%'})
-aimassist_section:Slider({Name = 'Y smoothing', Flag = 'aimassist_vertical_smoothing', Max = 100, Default = 0, Suffix = '%'})
-aimassist_section:Slider({Name = 'Humanization', Flag = 'aimassist_humanization', Max = 10, Default = 0})
-
-aimassist_section:Toggle({Name = 'Predict velocity', Flag = 'aimassist_predict_velocity'})
-aimassist_section:Slider({Name = 'Prediction', Flag = 'aimassist_velocity_prediction', Max = 100, Default = 0, Suffix = '%'})
-
-aimassist_section:Toggle({Name = 'Dead zone', Flag = 'aimassist_deadzone'})
-aimassist_section:Dropdown({Name = 'Dead zone mode', Flag = 'aimassist_deadzone_mode', Items = {'Full body', 'Magnitude'}, Default = 'Full body'})
-aimassist_section:Slider({Name = 'Dead zone amount', Flag = 'aimassist_deadzone_amount', Max = 40, Default = 0, Suffix = '°'})
-
-aimassist_section:Dropdown({Name = 'Hitboxes', Flag = 'aimassist_hitboxes', Items = {'Head', 'Torso', 'Arms', 'Legs'}, Multi = true, Default = {'Head'}})]]
+aimassist_section:Button({name = 'cuck', callback = function()
+    print('hay')
+end})]]
