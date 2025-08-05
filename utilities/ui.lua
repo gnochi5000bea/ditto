@@ -2510,7 +2510,6 @@ function library:Button(options)
         items[ "button_shading" ] = library:create( "Frame" , {
             Parent = items[ "button" ];
             Name = "\0";
-            Position = dim2(0, 1, 0, 1);
             BorderColor3 = rgb(0, 0, 0);
             Size = dim2(1, 0, 1, 0);
             BorderSizePixel = 0;
