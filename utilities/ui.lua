@@ -2501,13 +2501,14 @@ function library:Button(options)
             BackgroundTransparency = 1;
             Size = dim2(1, 0, 0, 20);
             BorderColor3 = rgb(0, 0, 0);
+            Text = '';
             BorderSizePixel = 0;
             AutomaticSize = Enum.AutomaticSize.Y;
             BackgroundColor3 = rgb(255, 255, 255)
         });
         
         items[ "button_shading" ] = library:create( "Frame" , {
-            Parent = items[ "button_outline" ];
+            Parent = items[ "button" ];
             Name = "\0";
             Position = dim2(0, 1, 0, 1);
             BorderColor3 = rgb(0, 0, 0);
