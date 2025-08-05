@@ -181,7 +181,7 @@ local notifications = library.notifications
 library.font = Font.fromId(12187365364, Enum.FontWeight.Medium)
 
 function library:tween(obj, properties, easing_style, time) 
-    local tween = tween_service:Create(obj, TweenInfo.new(time or 0.25, easing_style or Enum.EasingStyle.Quint, Enum.EasingDirection.InOut, 0, false, 0), properties):Play()
+    local tween = tween_service:Create(obj, TweenInfo.new(time or 0.25, easing_style or Enum.EasingStyle.Quint, Enum.EasingDirection.InOut, 0, false, 0), properties)
         
     return tween
 end
@@ -1076,7 +1076,7 @@ function library:Toggle(options)
     end;
     
     function cfg.set(bool)
-        library:tween(items[ "toggle" ], {BackgroundColor3 = bool and library.theme.accent or rgb(17, 17, 17)})
+        library:tween(items[ "toggle" ], {BackgroundColor3 = bool and library.theme.accent or rgb(17, 17, 17)}):Play()
 
         cfg.callback(bool)
 
@@ -2173,11 +2173,11 @@ function library:Textbox(options)
     end)
 
     items[ "textbox" ].Focused:Connect(function()
-        library:tween(items[ "textbox" ], {TextTransparency = 0})
+        library:tween(items[ "textbox" ], {TextTransparency = 0}):Play()
     end)
 
     items[ "textbox" ].FocusLost:Connect(function()
-        library:tween(items[ "textbox" ], {TextTransparency = 0.5})
+        library:tween(items[ "textbox" ], {TextTransparency = 0.5}):Play()
     end)
         
     if cfg.default then 
@@ -2499,11 +2499,10 @@ function library:Button(options)
             Name = "\0";
             AutoButtonColor = false;
             BackgroundTransparency = 1;
-            Size = dim2(1, 0, 0, 20);
+            Size = dim2(1, 0, 0, 30);
             BorderColor3 = rgb(0, 0, 0);
             Text = '';
             BorderSizePixel = 0;
-            AutomaticSize = Enum.AutomaticSize.Y;
             BackgroundColor3 = rgb(255, 255, 255)
         });
         
@@ -2511,10 +2510,10 @@ function library:Button(options)
             Parent = items[ "button" ];
             Name = "\0";
             BorderColor3 = rgb(0, 0, 0);
-            Size = dim2(1, 0, 1, 0);
+            Size = dim2(1, 0, 0, 25);
             BorderSizePixel = 0;
-            BackgroundColor3 = library.theme.accent
-        }); table.insert(library.themeable, items[ "button_shading" ])
+            BackgroundColor3 = rgb(47, 47, 47)
+        });
         
         items[ "button_text" ] = library:create( "TextLabel" , {
             FontFace = library.font;
@@ -2526,17 +2525,23 @@ function library:Button(options)
             BackgroundTransparency = 1;
             Size = dim2(1, 0, 1, 0);
             BorderSizePixel = 0;
-            AutomaticSize = Enum.AutomaticSize.XY;
             TextSize = 14;
             BackgroundColor3 = rgb(255, 255, 255)
         });
+
+        library:create( "UICorner" , {
+            Parent = items[ "button_shading" ];
+            CornerRadius = dim(0, 4)
+        })
     end 
 
     items[ "button" ].MouseButton1Click:Connect(function()
         cfg.callback()
 
-        items[ "button_text" ].TextColor3 = library.theme.font
-        library:tween(items[ "button_text" ], {TextColor3 = rgb(178, 178, 178)})
+        local tween = library:tween(items[ "button_shading" ], {BackgroundColor3 = library.theme.accent}, nil, 0.12)
+        tween:Play()
+        tween.Completed:Wait()
+        library:tween(items[ "button_shading" ], {BackgroundColor3 = rgb(47, 47, 47)}, nil, 0.12):Play()
     end)
     
     return setmetatable(cfg, library)
@@ -2630,12 +2635,12 @@ function library:List(properties)
             button.MouseButton1Click:Connect(function()
                 local current = cfg.current_element 
                 if current and current ~= name then 
-                    library:tween(current, {TextColor3 = library.theme.font})
+                    library:tween(current, {TextColor3 = library.theme.font}):Play()
                 end
 
                 flags[cfg.flag] = option_data
                 cfg.callback(option_data)
-                library:tween(name, {TextColor3 = library.theme.accent})
+                library:tween(name, {TextColor3 = library.theme.accent}):Play()
                 cfg.current_element = name
             end)
         end
@@ -2725,9 +2730,12 @@ end
 
 return getgenv().library
 --[[
+local window = library:Window({name = 'ditto hub | <font color="rgb(252, 157, 242)">Build An Island</font>', size = UDim2.new(0, 677, 0, 477)})
+
 local main_tab = window:Tab({name = 'Main'})
 local aiming_subtab = main_tab:Subtab({name = 'Aiming'})
 local aimassist_section = aiming_subtab:Section({name = "Aim-assist"})
 aimassist_section:Button({name = 'cuck', callback = function()
     print('hay')
-end})]]
+end})
+]]
